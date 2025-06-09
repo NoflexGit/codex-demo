@@ -4,11 +4,25 @@ import '@mantine/core/styles.css';
 
 function App() {
   const form = useForm({
+    validateInputOnChange: true,
+    validateInputOnBlur: true,
     initialValues: {
       cardholder: '',
       cardNumber: '',
       expirationDate: '',
       cvv: '',
+    },
+    validate: {
+      cardNumber: value =>
+        /^\d{16}$/.test(String(value).replace(/\s/g, '')) ? null : 'Invalid card number',
+      cardholder: value => (value.trim().length > 0 ? null : 'Cardholder name is required'),
+      expirationDate: value => {
+        const match = String(value).match(/^(\d{2})(\d{2})$/);
+        if (!match) return 'Invalid date';
+        const month = Number(match[1]);
+        return month >= 1 && month <= 12 ? null : 'Invalid date';
+      },
+      cvv: value => (/^\d{3}$/.test(String(value)) ? null : 'Invalid CVV'),
     },
   });
   return (
@@ -51,7 +65,9 @@ function App() {
               />
             </div>
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={!form.isValid()}>
+              Submit
+            </Button>
           </form>
         </section>
       </main>
