@@ -1,5 +1,5 @@
 import { useForm } from '@mantine/form';
-import { TextInput, NumberInput, Button, MantineProvider } from '@mantine/core';
+import { TextInput, NumberInput, PasswordInput, Button, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import { useState } from 'react';
 import CardPreview from './components/CardPreview';
@@ -68,12 +68,13 @@ function App() {
                 onFocus={() => setShowBack(false)}
                 {...form.getInputProps('expirationDate')}
               />
-              <NumberInput
+              <PasswordInput
                 maxLength={3}
                 className="w-full"
-                hideControls
                 label="CVV"
-                placeholder="123"
+                placeholder="***"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 onFocus={() => setShowBack(true)}
                 onBlur={() => setShowBack(false)}
                 {...form.getInputProps('cvv')}
